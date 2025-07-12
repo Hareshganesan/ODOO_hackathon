@@ -1,0 +1,154 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// User model
+model User {
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  password      String
+  name          String?
+  location      String?
+  profilePhoto  String?   @map("profile_photo")
+  isPublic      Boolean   @default(true) @map("is_public")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  isActive      Boolean   @default(true) @map("is_active")
+  
+  // Relations
+  userSkills       UserSkill[]
+  availability     Availability[]
+  sentRequests     SwapRequest[]   @relation("Requester")
+  receivedRequests SwapRequest[]   @relation("Receiver")
+  givenRatings     Rating[]        @relation("Rater")
+  receivedRatings  Rating[]        @relation("Rated")
+  
+  @@map("users")
+}
+
+// Skill model
+model Skill {
+  id          Int         @id @default(autoincrement())
+  name        String      @unique
+  category    String
+  description String?
+  createdAt   DateTime    @default(now()) @map("created_at")
+  
+  // Relations
+  userSkills  UserSkill[]
+  
+  @@map("skills")
+}
+
+// UserSkill junction table
+model UserSkill {
+  id      Int           @id @default(autoincrement())
+  userId  Int           @map("user_id")
+  skillId Int           @map("skill_id")
+  type    SkillType     // 'offered' or 'wanted'
+  level   SkillLevel    @default(BEGINNER)
+  
+  // Relations
+  user    User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill   Skill         @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  
+  // Swap request relations
+  offeredInSwaps SwapRequest[] @relation("SkillOffered")
+  wantedInSwaps  SwapRequest[] @relation("SkillWanted")
+  
+  @@unique([userId, skillId, type])
+  @@map("user_skills")
+}
+
+// SwapRequest model
+model SwapRequest {
+  id              Int             @id @default(autoincrement())
+  requesterId     Int             @map("requester_id")
+  receiverId      Int             @map("receiver_id")
+  skillOfferedId  Int             @map("skill_offered_id")
+  skillWantedId   Int             @map("skill_wanted_id")
+  status          RequestStatus   @default(PENDING)
+  message         String?
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+  
+  // Relations
+  requester       User            @relation("Requester", fields: [requesterId], references: [id])
+  receiver        User            @relation("Receiver", fields: [receiverId], references: [id])
+  skillOffered    UserSkill       @relation("SkillOffered", fields: [skillOfferedId], references: [id])
+  skillWanted     UserSkill       @relation("SkillWanted", fields: [skillWantedId], references: [id])
+  ratings         Rating[]
+  
+  @@map("swap_requests")
+}
+
+// Rating model
+model Rating {
+  id            Int         @id @default(autoincrement())
+  swapRequestId Int         @map("swap_request_id")
+  raterId       Int         @map("rater_id")
+  ratedId       Int         @map("rated_id")
+  rating        Int         // 1-5 scale
+  feedback      String?
+  createdAt     DateTime    @default(now()) @map("created_at")
+  
+  // Relations
+  swapRequest   SwapRequest @relation(fields: [swapRequestId], references: [id])
+  rater         User        @relation("Rater", fields: [raterId], references: [id])
+  rated         User        @relation("Rated", fields: [ratedId], references: [id])
+  
+  @@map("ratings")
+}
+
+// Availability model
+model Availability {
+  id          Int       @id @default(autoincrement())
+  userId      Int       @map("user_id")
+  dayOfWeek   DayOfWeek @map("day_of_week")
+  startTime   String    @map("start_time") // Format: "HH:mm"
+  endTime     String    @map("end_time")   // Format: "HH:mm"
+  
+  // Relations
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("availability")
+}
+
+// Enums
+enum SkillType {
+  OFFERED
+  WANTED
+}
+
+enum SkillLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  COMPLETED
+  CANCELLED
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
