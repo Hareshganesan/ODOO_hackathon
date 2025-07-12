@@ -1,0 +1,61 @@
+Project Progress Report – Skill Swap Platform
+
+Project Overview:
+
+The Skill Swap Platform is a web-based mini application that allows users to list the skills they offer and request skills in return. The platform enables profile creation, search and filtering by skills, swap request and approval flows, post-swap feedback, and administrative control for moderation and user management.
+
+ Development Phases
+Beta 1 – Initial Implementation
+
+Objectives Completed:
+* User Registration and Login (basic auth)
+* User profile setup (name, photo, skills offered/wanted, availability)
+* Search and filter mechanism based on skills
+* Basic frontend design with static routing
+
+
+Issues Faced:
+* At this stage, backend routes were not secure.
+* Skill searches had performance issues due to improper query handling.
+
+Beta 2 – Swap Functionality & Feedback
+
+Features Added:
+* Swap request feature (send/receive requests)
+* Accept, reject, or delete requests
+* View current, pending, and cancelled requests
+* Feedback/rating system after swaps
+* Profile visibility (public/private toggle)
+
+Backend Improvements:
+* Feedback system linked to completed swaps
+
+Challenges:
+*Backend complexity increased, especially in managing real-time swap status transitions.
+* Ensuring accurate syncing between front-end state and backend DB was difficult.
+
+
+Final Work – Admin Dashboard & Stability
+
+Final Enhancements:
+* Admin dashboard: Monitor swaps, reject skill descriptions, ban users
+* Export logs for swaps, feedback, and user activity
+* Platform-wide announcement system
+* Mobile responsiveness and UI polish
+
+Key Fixes:
+
+* Backend validation added to avoid multiple feedback per swap
+* Used Mongoose middleware for swap lifecycle handling
+* Implemented authentication tokens for admin access
+
+Remaining Issues:
+
+* Backend scalability still needs work (load tested only to minimal extent)
+* Swap search still has latency under high loads
+* Feedback pagination in admin panel is incomplete
+
+Conclusion
+
+Despite facing several backend integration challenges, we successfully developed a functional and interactive **Skill Swap Platform** that supports user engagement, community skill sharing, and platform moderation. Backend stability and scalability will be our future focus if the platform is taken to production or demo level.
+
