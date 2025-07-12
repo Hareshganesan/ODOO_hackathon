@@ -1,6 +1,4 @@
-# Copilot Instructions for Skill Swap Platform
 
-<!-- Use this file to provide workspace-specific custom instructions to Copilot. For more details, visit https://code.visualstudio.com/docs/copilot/copilot-customization#_use-a-githubcopilotinstructionsmd-file -->
 
 ## Project Overview
 This is a full-stack Skill Swap Platform built with:
@@ -8,7 +6,6 @@ This is a full-stack Skill Swap Platform built with:
 - **Backend**: Next.js API routes with Express-like functionality
 - **Database**: MySQL with Prisma ORM
 - **Authentication**: NextAuth.js with JWT tokens
-- **File Upload**: Multer for profile photos
 
 ## Key Features
 - User registration and authentication (email/password)
@@ -48,10 +45,4 @@ This is a full-stack Skill Swap Platform built with:
 - /api/ratings/* - Rating system
 - /api/admin/* - Admin functions
 
-## UI/UX Guidelines
-- Follow the mockup design provided
-- Use consistent color scheme and typography
-- Implement proper loading states
-- Include proper error messages
-- Ensure accessibility compliance
-- Mobile-first responsive design
+
