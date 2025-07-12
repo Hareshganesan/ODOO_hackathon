@@ -4,6 +4,8 @@ A full-stack web application that empowers users to exchange skills and knowledg
 
 ---
 
+Video link: https://drive.google.com/file/d/15x0FQ7obLDFYjKrt31hvtW6cqsZuFIc5/view?usp=sharing
+
 ## Features
 
 ### User Authentication
